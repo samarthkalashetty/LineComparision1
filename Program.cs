@@ -1,36 +1,44 @@
 ﻿using System;
 
-namespace LineLengthCalculation
+namespace LineEqualityCheck
 {
-    class UC1
+    class UC2
     {
-        static double CalculateLineLength(double x1, double y1, double x2, double y2)
+        class Line
         {
-            double deltaX = x2 - x1;
-            double deltaY = y2 - y1;
-            double length = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-            return length;
+            public double X1 { get; set; }
+            public double Y1 { get; set; }
+            public double X2 { get; set; }
+            public double Y2 { get; set; }
+
+            public override bool Equals(object obj)
+            {
+                if (obj == null || GetType() != obj.GetType())
+                {
+                    return false;
+                }
+
+                Line other = (Line)obj;
+                return X1 == other.X1 && Y1 == other.Y1 && X2 == other.X2 && Y2 == other.Y2;
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(X1, Y1, X2, Y2);
+            }
         }
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Line Length Calculation!");
+            Line line1 = new Line { X1 = 0, Y1 = 0, X2 = 1, Y2 = 1 };
+            Line line2 = new Line { X1 = 0, Y1 = 0, X2 = 1, Y2 = 1 };
+            Line line3 = new Line { X1 = 2, Y1 = 2, X2 = 3, Y2 = 3 };
 
-            Console.Write("Enter x-coordinate of the first point: ");
-            double x1 = double.Parse(Console.ReadLine());
+            bool areLinesEqual1 = line1.Equals(line2);
+            bool areLinesEqual2 = line1.Equals(line3);
 
-            Console.Write("Enter y-coordinate of the first point: ");
-            double y1 = double.Parse(Console.ReadLine());
-
-            Console.Write("Enter x-coordinate of the second point: ");
-            double x2 = double.Parse(Console.ReadLine());
-
-            Console.Write("Enter y-coordinate of the second point: ");
-            double y2 = double.Parse(Console.ReadLine());
-
-            double lineLength = CalculateLineLength(x1, y1, x2, y2);
-
-            Console.WriteLine($"The length of the line between ({x1}, {y1}) and ({x2}, {y2}) is: {lineLength}");
+            Console.WriteLine($"Line 1 and Line 2 are equal: {areLinesEqual1}");
+            Console.WriteLine($"Line 1 and Line 3 are equal: {areLinesEqual2}");
         }
     }
 }
